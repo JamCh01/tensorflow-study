@@ -86,3 +86,51 @@ In [14]: with tf.Session() as session:
 [3. 7.]
 ```
 可以使用`run()`的`feed_dict`参数将数据“投喂”至张量中。
+
+
+
+### 层（Layer）
+将可训练的参数增加到图中的首选方法时使用层。
+*神经网络的基本构造块是层。*
+#### 创建层
+```python
+In [15]: x = tf.placeholder(tf.float32, shape=[None, 3])
+
+In [16]: linear_model = tf.layers.Dense(units=1)
+
+In [17]: y = linear_model(x)
+
+In [18]: x
+Out[18]: <tf.Tensor 'Placeholder_2:0' shape=(?, 3) dtype=float32>
+
+In [19]: y
+Out[19]: <tf.Tensor 'dense/BiasAdd:0' shape=(?, 1) dtype=float32>
+
+In [20]: linear_model
+Out[20]: <tensorflow.python.layers.core.Dense at 0x1ae96a2f828>
+```
+上面的代码创建了Dense层，接受矢量，并生成一个输出值。要将层应用于输入的值，可以将层当作函数使用。  
+层会检查参数输入来确定内部变量的大小。所以这里设置`x`为占位符，以便可以正确的构建权重矩阵。  
+在计算之前，还有一些细节。  
+
+#### 初始化层
+层内的变量必须初始化后才能够使用，可以初始化一个Tensorflow图中的所有变量
+```python
+In [22]: init = tf.global_variables_initializer()
+
+In [23]: with tf.Session() as session:
+    ...:     session.run(init)
+```
+*在构建图的最后一步进行初始化，因为仅会初始化创建初始化程序时图中的变量*
+
+#### 执行层
+```python
+In [22]: init = tf.global_variables_initializer()
+
+In [23]: with tf.Session() as session:
+    ...:     session.run(init)
+    ...:     print(session.run(y, {x: [[1, 2, 3], [4, 5, 6]]}))
+    ...:
+[[3.4941597]
+ [5.686575 ]]
+```
