@@ -14,7 +14,7 @@ In [7]: with tensorflow.Session() as session:
             print('a={a}, b={b}'.format(a=2, b=3))
             print("Addition with constants: {}".format(session.run(a+b)))
             print("Multiplication with constants: {}".format(session.run(a*b)))
-        a=2, b=3
+a=2, b=3
 Addition with constants: 5
 Multiplication with constants: 6
 ```
